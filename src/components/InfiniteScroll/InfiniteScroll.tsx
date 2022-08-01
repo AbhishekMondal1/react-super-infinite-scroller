@@ -1,7 +1,7 @@
-import React, { ReactElement, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { InfiniteScrollProps } from "./InfiniteScroll.types";
 
-function InfiniteScroll(props: InfiniteScrollProps): ReactElement {
+function InfiniteScroll(props: InfiniteScrollProps): React.ReactElement {
   const { children, setPage, hasMorePages, loading } = props;
   const [lastElement, setLastElement] = React.useState<HTMLElement | null>(
     null,
