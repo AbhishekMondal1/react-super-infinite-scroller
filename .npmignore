@@ -1,0 +1,8 @@
+src/
+.editorconfig
+.eslintignore
+.eslintrc.json
+.prettierignore
+.prettierrc
+rollup.config.js
+tsconfig.json
