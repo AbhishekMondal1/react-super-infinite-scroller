@@ -2,8 +2,16 @@ import React, { useEffect, useRef } from "react";
 import { InfiniteScrollProps } from "./InfiniteScroll.types";
 
 function InfiniteScroll(props: InfiniteScrollProps): React.ReactElement {
-  const { children, setPage, hasMorePages, loading } = props;
-  const [lastElement, setLastElement] = React.useState<HTMLElement | null>(
+  const {
+    children,
+    setPage,
+    hasMorePages,
+    loading,
+    reverse,
+    thresholdValue,
+    rootMarginValue,
+  } = props;
+  const [targetElement, setTargetElement] = React.useState<HTMLElement | null>(
     null,
   );
 
@@ -14,12 +22,17 @@ function InfiniteScroll(props: InfiniteScrollProps): React.ReactElement {
           setPage((page) => page + 1);
         }
       },
-      { threshold: 0.9 },
+      {
+        threshold: thresholdValue || 0,
+        rootMargin: rootMarginValue
+          ? `${rootMarginValue}px ${rootMarginValue}px ${rootMarginValue}px ${rootMarginValue}px`
+          : "0px",
+      },
     ),
   );
 
   useEffect(() => {
-    const currentElement = lastElement;
+    const currentElement = targetElement;
     const currentObserver = observer.current;
     if (currentElement) {
       currentObserver.observe(currentElement);
@@ -34,7 +47,7 @@ function InfiniteScroll(props: InfiniteScrollProps): React.ReactElement {
         currentObserver.unobserve(currentElement);
       }
     };
-  }, [lastElement, hasMorePages]);
+  }, [targetElement, hasMorePages]);
 
   return (
     <div>
@@ -42,10 +55,18 @@ function InfiniteScroll(props: InfiniteScrollProps): React.ReactElement {
       {React.Children.map(children, (child, index) => {
         if (
           React.isValidElement(child) &&
-          React.Children.count(children) - 1 === index
+          React.Children.count(children) - 1 === index &&
+          !reverse
         ) {
           return (
-            <div ref={setLastElement} className="last-element">
+            <div ref={setTargetElement} className="target-element">
+              {React.cloneElement(child)}
+            </div>
+          );
+        }
+        if (React.isValidElement(child) && index === 0 && reverse) {
+          return (
+            <div ref={setTargetElement} className="target-element">
               {React.cloneElement(child)}
             </div>
           );

@@ -5,4 +5,7 @@ export interface InfiniteScrollProps {
   setPage: React.Dispatch<React.SetStateAction<number>>;
   hasMorePages: boolean;
   loading: boolean;
+  reverse?: boolean;
+  thresholdValue?: number;
+  rootMarginValue?: number;
 }
