@@ -102,8 +102,9 @@ Reverse scroll <br>
 | ----------------- | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `setPage`         | function | ✅ yes   | useState function to set the page number.                                                                                                                |
 | `hasMorePages`    | boolean  | ✅ yes   | If there are more items to load.                                                                                                                         |
-| `loading`         | boolean  | ✅ yes   | it tells if data is fetching. When new items are fetching loading state is set to true                                                                   |
-| `children`        | element  | ✅ yes   | Items you need to scroll.                                                                                                                                |
+| `loading`         | boolean  | ✅ yes   | It tells if data is fetching. When new items are fetching loading state is set to true                                                                   |
+| `children`        | Node     | ✅ yes   | Items you need to scroll.                                                                                                                                |
+| `reverse`         | boolean  | ❌ no    | Scroll and load items in reverse from top.                                                                                                               |
 | `thresholdValue`  | number   | ❌ no    | Value (between 0.0 and 1.0), representing the percentage target element is visible to trigger the callback.                                              |
 | `rootMarginValue` | string   | ❌ no    | Margin around the target element. `rootMarginValue` represents the margin around the target element that must be in view in order to trigger a callback. |
 
