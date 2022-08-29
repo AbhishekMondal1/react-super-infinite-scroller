@@ -10,40 +10,47 @@ function InfiniteScroll(props: InfiniteScrollProps): React.ReactElement {
     reverse,
     thresholdValue,
     rootMarginValue,
+    rootElement,
   } = props;
   const [targetElement, setTargetElement] = React.useState<HTMLElement | null>(
     null,
   );
+  const observer = useRef<IntersectionObserver>();
 
-  const observer = useRef<IntersectionObserver>(
-    new IntersectionObserver(
+  useEffect(() => {
+    observer.current = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
+          if (observer.current) observer.current.unobserve(entries[0].target);
           setPage((page) => page + 1);
         }
       },
       {
+        root: (rootElement && rootElement.current) || null,
         threshold: thresholdValue || 0,
         rootMargin: rootMarginValue
           ? `${rootMarginValue}px ${rootMarginValue}px ${rootMarginValue}px ${rootMarginValue}px`
           : "0px",
       },
-    ),
-  );
+    );
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, [rootElement]);
 
   useEffect(() => {
     const currentElement = targetElement;
     const currentObserver = observer.current;
-    if (currentElement) {
+    if (currentElement && currentObserver) {
       currentObserver.observe(currentElement);
     }
     if (hasMorePages === false) {
-      if (currentElement !== null) {
+      if (currentElement !== null && currentObserver) {
         currentObserver.unobserve(currentElement);
       }
     }
     return () => {
-      if (currentElement) {
+      if (currentElement && currentObserver) {
         currentObserver.unobserve(currentElement);
       }
     };

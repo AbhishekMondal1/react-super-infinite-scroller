@@ -8,4 +8,5 @@ export interface InfiniteScrollProps {
   reverse?: boolean;
   thresholdValue?: number;
   rootMarginValue?: number;
+  rootElement?: React.RefObject<HTMLElement | Document>;
 }

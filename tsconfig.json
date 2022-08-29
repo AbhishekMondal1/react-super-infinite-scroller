@@ -5,7 +5,7 @@
     "jsx": "react",
     "module": "ESNext",
     "moduleResolution": "node",
-    "types": ["node"],
+    "types": ["node", "jest", "@testing-library/jest-dom"],
     "declaration": true,
     "outDir": "/dist/esm",
     "allowSyntheticDefaultImports": true,
