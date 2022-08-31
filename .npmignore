@@ -1,8 +1,12 @@
 .husky
 src/
+coverage/
+.github/
+.babelrc
 .editorconfig
 .eslintignore
 .eslintrc.json
+jest.config.js
 .prettierignore
 .prettierrc
 rollup.config.js
