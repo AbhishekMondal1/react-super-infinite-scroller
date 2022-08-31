@@ -2,8 +2,11 @@
 
 An Infinite Scroll component for React using Intersection Observer API.
 
-[![React](https://img.shields.io/badge/MADE%20WITH-REACT-blue?style=for-the-badge&logo=appveyor)](https://reactjs.org)
-[![MIT License](https://img.shields.io/badge/LICENSE-MIT-orange?style=for-the-badge&logo=appveyor)](https://github.com/AbhishekMondal1/react-super-infinite-scroller/blob/master/LICENSE)
+[![npm version](https://img.shields.io/npm/v/react-super-infinite-scroller.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/react-super-infinite-scroller)
+[![coverage](https://img.shields.io/codecov/c/github/AbhishekMondal1/react-super-infinite-scroller?style=flat-square&logo=codecov&token=XPQH5LI3U2)](https://codecov.io/gh/AbhishekMondal1/react-super-infinite-scroller)
+![](https://img.shields.io/bundlephobia/min/react-super-infinite-scroller?style=flat-square)
+[![snyk](https://img.shields.io/snyk/vulnerabilities/npm/react-super-infinite-scroller?logo=snyk)](https://snyk.io/test/github/AbhishekMondal1/react-super-infinite-scroller)
+[![MIT License](https://img.shields.io/github/license/AbhishekMondal1/react-super-infinite-scroller?style=flat-square&)](https://github.com/AbhishekMondal1/react-super-infinite-scroller/blob/master/LICENSE)
 
 ## Installation 📦
 
@@ -98,15 +101,16 @@ Reverse scroll <br>
 
 ## props
 
-| name              | type     | required | description                                                                                                                                              |
-| ----------------- | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `setPage`         | function | ✅ yes   | useState function to set the page number.                                                                                                                |
-| `hasMorePages`    | boolean  | ✅ yes   | If there are more items to load.                                                                                                                         |
-| `loading`         | boolean  | ✅ yes   | It tells if data is fetching. When new items are fetching loading state is set to true                                                                   |
-| `children`        | Node     | ✅ yes   | Items you need to scroll.                                                                                                                                |
-| `reverse`         | boolean  | ❌ no    | Scroll and load items in reverse from top.                                                                                                               |
-| `thresholdValue`  | number   | ❌ no    | Value (between 0.0 and 1.0), representing the percentage target element is visible to trigger the callback.                                              |
-| `rootMarginValue` | string   | ❌ no    | Margin around the target element. `rootMarginValue` represents the margin around the target element that must be in view in order to trigger a callback. |
+| name              | type        | required | description                                                                                                                                              |
+| ----------------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `setPage`         | function    | ✅ yes   | useState function to set the page number.                                                                                                                |
+| `hasMorePages`    | boolean     | ✅ yes   | If there are more items to load.                                                                                                                         |
+| `loading`         | boolean     | ✅ yes   | It tells if data is fetching. When new items are fetching loading state is set to true                                                                   |
+| `children`        | Node        | ✅ yes   | Items you need to scroll.                                                                                                                                |
+| `reverse`         | boolean     | ❌ no    | Scroll and load items in reverse from top.                                                                                                               |
+| `thresholdValue`  | number      | ❌ no    | Value (between 0.0 and 1.0), representing the percentage target element is visible to trigger the callback.                                              |
+| `rootElement`     | HTMLElement | ❌ no    | Root element of the observer. The element that is used as the viewport for checking visibility of the target. Default is document viewport.              |
+| `rootMarginValue` | string      | ❌ no    | Margin around the target element. `rootMarginValue` represents the margin around the target element that must be in view in order to trigger a callback. |
 
 ## License
 
