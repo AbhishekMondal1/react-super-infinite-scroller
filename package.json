@@ -1,6 +1,6 @@
 {
   "name": "react-super-infinite-scroller",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "An Infinite Scroll component for React using Intersection Observer API.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
