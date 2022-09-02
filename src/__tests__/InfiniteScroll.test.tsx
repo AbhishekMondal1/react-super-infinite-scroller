@@ -5,7 +5,7 @@ import IntersectionObserverMock from "../__mocks__/IntersectionObserver";
 import InfiniteScroll from "../index";
 
 afterEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 describe("Intersection Observer", () => {
@@ -21,6 +21,49 @@ describe("Intersection Observer", () => {
             setPage={() => {}}
             loading={false}
             rootElement={rootRef}
+          >
+            <div />
+          </InfiniteScroll>
+        </div>
+      );
+    }
+    const container = render(<App />);
+    expect(container.container).toBeInTheDocument();
+  });
+
+  it("should render without custom root element", () => {
+    const intersectionObserverMock = new IntersectionObserverMock();
+    intersectionObserverMock.mock();
+    function App() {
+      return (
+        <div>
+          <InfiniteScroll
+            hasMorePages={false}
+            setPage={() => {}}
+            loading={false}
+          >
+            <div />
+          </InfiniteScroll>
+        </div>
+      );
+    }
+    const container = render(<App />);
+    expect(container.container).toBeInTheDocument();
+  });
+
+  it("should render with custom root margin value", () => {
+    const intersectionObserverMock = new IntersectionObserverMock();
+    intersectionObserverMock.mock();
+    function App() {
+      const rootRef = useRef(null);
+      return (
+        <div ref={rootRef}>
+          <InfiniteScroll
+            hasMorePages={false}
+            setPage={() => {}}
+            loading={false}
+            rootElement={rootRef}
+            rootMarginValue={100}
           >
             <div />
           </InfiniteScroll>
@@ -58,6 +101,111 @@ describe("Intersection Observer", () => {
     expect(screen.getByText("ReactJS")).toBeInTheDocument();
     expect(container.querySelectorAll(".child-elements").length).toBe(
       names.length,
+    );
+  });
+
+  it("should show loading status before fetching data", async () => {
+    const intersectionObserverMock = new IntersectionObserverMock();
+    intersectionObserverMock.mock();
+    const spyAxios = jest
+      .spyOn(axios, "get")
+      .mockResolvedValueOnce({
+        data: {
+          results: [
+            { name: "1" },
+            { name: "2" },
+            { name: "3" },
+            { name: "4" },
+            { name: "5" },
+            { name: "6" },
+            { name: "7" },
+            { name: "8" },
+            { name: "9" },
+            { name: "10" },
+          ],
+          total: 50,
+        },
+      })
+      .mockResolvedValueOnce({
+        data: {
+          results: [
+            { name: "11" },
+            { name: "12" },
+            { name: "13" },
+            { name: "14" },
+            { name: "15" },
+            { name: "16" },
+            { name: "17" },
+            { name: "18" },
+            { name: "19" },
+            { name: "20" },
+          ],
+          total: 50,
+        },
+      });
+
+    function App() {
+      const [pokemons, setPokemons] = useState<{ name: number }[]>([]);
+      const [page, setPage] = useState(0);
+      const [loading, setLoading] = useState(true);
+      const [hasMorePages, setHasMorePages] = useState(false);
+      const rootRef = useRef(null);
+
+      const fetchesData = useCallback(async () => {
+        setLoading(true);
+        const { data } = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon/?offset=${page * 10}&limit=10`,
+        );
+        const { results } = data;
+        const total = 20;
+        if (results !== undefined && results !== null) {
+          setPokemons((prevState) => {
+            if (prevState.length) {
+              setHasMorePages(results.length + prevState.length < total);
+            }
+            return [...prevState, ...results];
+          });
+        }
+      }, []);
+
+      useEffect(() => {
+        fetchesData();
+      }, [page]);
+
+      return (
+        <div id="mainview">
+          <div
+            id="viewPort"
+            ref={rootRef}
+            className="viewPort"
+            style={{ overflowY: "scroll", maxHeight: "300px" }}
+          >
+            <InfiniteScroll
+              setPage={setPage}
+              hasMorePages={hasMorePages}
+              rootElement={rootRef}
+              loading={loading}
+            >
+              {pokemons.map((pokemon) => (
+                <div key={pokemon.name}>{pokemon.name}</div>
+              ))}
+            </InfiniteScroll>
+          </div>
+        </div>
+      );
+    }
+
+    await act(async () => {
+      render(<App />);
+    });
+    await waitFor(() => {
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
+    });
+
+    expect(spyAxios).toHaveBeenCalledTimes(1);
+    expect(spyAxios).toHaveBeenNthCalledWith(
+      1,
+      "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=10",
     );
   });
 
@@ -360,10 +508,11 @@ describe("Intersection Observer", () => {
               hasMorePages={hasMorePages}
               rootElement={rootRef}
               loading={false}
+              reverse
             >
-              {pokemons.map((pokemon) => (
-                <div key={pokemon.name}>{pokemon.name}</div>
-              ))}
+              {pokemons
+                .map((pokemon) => <div key={pokemon.name}>{pokemon.name}</div>)
+                .reverse()}
             </InfiniteScroll>
           </div>
         </div>
@@ -392,7 +541,6 @@ describe("Intersection Observer", () => {
     await waitFor(() => {
       expect(screen.getByText("50")).toBeInTheDocument();
     });
-    intersectionObserverMock.simulate({ intersectionRatio: 1 });
 
     expect(spyAxios).toHaveBeenCalledTimes(5);
     expect(spyAxios).toHaveBeenNthCalledWith(
