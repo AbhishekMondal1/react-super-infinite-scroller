@@ -2,13 +2,21 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import { render, screen, waitFor, act } from "@testing-library/react";
 import axios from "axios";
 import IntersectionObserverMock from "../__mocks__/IntersectionObserver";
+import responseData from "../__fixtures__/responseData";
 import InfiniteScroll from "../index";
+
+const { resultsData, totalData } = responseData;
+const resultPage1 = resultsData.slice(0, 10);
+const resultPage2 = resultsData.slice(10, 20);
+const resultPage3 = resultsData.slice(20, 30);
+const resultPage4 = resultsData.slice(30, 40);
+const resultPage5 = resultsData.slice(40, 50);
 
 afterEach(() => {
   jest.resetAllMocks();
 });
 
-describe("Intersection Observer", () => {
+describe("<Infinite Scroll/> render", () => {
   it("should render infinite scroll component", () => {
     const intersectionObserverMock = new IntersectionObserverMock();
     intersectionObserverMock.mock();
@@ -110,38 +118,10 @@ describe("Intersection Observer", () => {
     const spyAxios = jest
       .spyOn(axios, "get")
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "1" },
-            { name: "2" },
-            { name: "3" },
-            { name: "4" },
-            { name: "5" },
-            { name: "6" },
-            { name: "7" },
-            { name: "8" },
-            { name: "9" },
-            { name: "10" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage1, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "11" },
-            { name: "12" },
-            { name: "13" },
-            { name: "14" },
-            { name: "15" },
-            { name: "16" },
-            { name: "17" },
-            { name: "18" },
-            { name: "19" },
-            { name: "20" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage2, total: totalData },
       });
 
     function App() {
@@ -215,89 +195,19 @@ describe("Intersection Observer", () => {
     const spyAxios = jest
       .spyOn(axios, "get")
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "1" },
-            { name: "2" },
-            { name: "3" },
-            { name: "4" },
-            { name: "5" },
-            { name: "6" },
-            { name: "7" },
-            { name: "8" },
-            { name: "9" },
-            { name: "10" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage1, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "11" },
-            { name: "12" },
-            { name: "13" },
-            { name: "14" },
-            { name: "15" },
-            { name: "16" },
-            { name: "17" },
-            { name: "18" },
-            { name: "19" },
-            { name: "20" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage2, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "21" },
-            { name: "22" },
-            { name: "23" },
-            { name: "24" },
-            { name: "25" },
-            { name: "26" },
-            { name: "27" },
-            { name: "28" },
-            { name: "29" },
-            { name: "30" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage3, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "31" },
-            { name: "32" },
-            { name: "33" },
-            { name: "34" },
-            { name: "35" },
-            { name: "36" },
-            { name: "37" },
-            { name: "38" },
-            { name: "39" },
-            { name: "40" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage4, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "41" },
-            { name: "42" },
-            { name: "43" },
-            { name: "44" },
-            { name: "45" },
-            { name: "46" },
-            { name: "47" },
-            { name: "48" },
-            { name: "49" },
-            { name: "50" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage5, total: totalData },
       });
 
     function App() {
@@ -340,8 +250,8 @@ describe("Intersection Observer", () => {
               rootElement={rootRef}
               loading={false}
             >
-              {pokemons.map((pokemon) => (
-                <div key={pokemon.name}>{pokemon.name}</div>
+              {pokemons.map((pokemon, i) => (
+                <div key={pokemon.name}>{`${i + 1} ${pokemon.name}`}</div>
               ))}
             </InfiniteScroll>
           </div>
@@ -353,23 +263,23 @@ describe("Intersection Observer", () => {
       render(<App />);
     });
     await waitFor(() => {
-      expect(screen.getByText("10")).toBeInTheDocument();
+      expect(screen.getByText("10 caterpie")).toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.getByText("20")).toBeInTheDocument();
+      expect(screen.getByText("20 raticate")).toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.getByText("30")).toBeInTheDocument();
+      expect(screen.getByText("30 nidorina")).toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.getByText("40")).toBeInTheDocument();
+      expect(screen.getByText("40 wigglytuff")).toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.getByText("50")).toBeInTheDocument();
+      expect(screen.getByText("50 diglett")).toBeInTheDocument();
     });
     expect(spyAxios).toHaveBeenCalledTimes(5);
     expect(spyAxios).toHaveBeenNthCalledWith(
@@ -384,89 +294,19 @@ describe("Intersection Observer", () => {
     const spyAxios = jest
       .spyOn(axios, "get")
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "1" },
-            { name: "2" },
-            { name: "3" },
-            { name: "4" },
-            { name: "5" },
-            { name: "6" },
-            { name: "7" },
-            { name: "8" },
-            { name: "9" },
-            { name: "10" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage1, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "11" },
-            { name: "12" },
-            { name: "13" },
-            { name: "14" },
-            { name: "15" },
-            { name: "16" },
-            { name: "17" },
-            { name: "18" },
-            { name: "19" },
-            { name: "20" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage2, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "21" },
-            { name: "22" },
-            { name: "23" },
-            { name: "24" },
-            { name: "25" },
-            { name: "26" },
-            { name: "27" },
-            { name: "28" },
-            { name: "29" },
-            { name: "30" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage3, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "31" },
-            { name: "32" },
-            { name: "33" },
-            { name: "34" },
-            { name: "35" },
-            { name: "36" },
-            { name: "37" },
-            { name: "38" },
-            { name: "39" },
-            { name: "40" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage4, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "41" },
-            { name: "42" },
-            { name: "43" },
-            { name: "44" },
-            { name: "45" },
-            { name: "46" },
-            { name: "47" },
-            { name: "48" },
-            { name: "49" },
-            { name: "50" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage5, total: totalData },
       });
 
     function App() {
@@ -511,7 +351,9 @@ describe("Intersection Observer", () => {
               reverse
             >
               {pokemons
-                .map((pokemon) => <div key={pokemon.name}>{pokemon.name}</div>)
+                .map((pokemon, i) => (
+                  <div key={pokemon.name}>{`${i + 1} ${pokemon.name}`}</div>
+                ))
                 .reverse()}
             </InfiniteScroll>
           </div>
@@ -523,23 +365,23 @@ describe("Intersection Observer", () => {
       render(<App />);
     });
     await waitFor(async () => {
-      expect(await screen.findByText("10")).toBeInTheDocument();
+      expect(await screen.findByText("10 caterpie")).toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.getByText("20")).toBeInTheDocument();
+      expect(screen.getByText("20 raticate")).toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.getByText("30")).toBeInTheDocument();
+      expect(screen.getByText("30 nidorina")).toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.getByText("40")).toBeInTheDocument();
+      expect(screen.getByText("40 wigglytuff")).toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.getByText("50")).toBeInTheDocument();
+      expect(screen.getByText("50 diglett")).toBeInTheDocument();
     });
 
     expect(spyAxios).toHaveBeenCalledTimes(5);
@@ -555,89 +397,19 @@ describe("Intersection Observer", () => {
     const spyAxios = jest
       .spyOn(axios, "get")
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "1" },
-            { name: "2" },
-            { name: "3" },
-            { name: "4" },
-            { name: "5" },
-            { name: "6" },
-            { name: "7" },
-            { name: "8" },
-            { name: "9" },
-            { name: "10" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage1, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "11" },
-            { name: "12" },
-            { name: "13" },
-            { name: "14" },
-            { name: "15" },
-            { name: "16" },
-            { name: "17" },
-            { name: "18" },
-            { name: "19" },
-            { name: "20" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage2, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "21" },
-            { name: "22" },
-            { name: "23" },
-            { name: "24" },
-            { name: "25" },
-            { name: "26" },
-            { name: "27" },
-            { name: "28" },
-            { name: "29" },
-            { name: "30" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage3, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "31" },
-            { name: "32" },
-            { name: "33" },
-            { name: "34" },
-            { name: "35" },
-            { name: "36" },
-            { name: "37" },
-            { name: "38" },
-            { name: "39" },
-            { name: "40" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage4, total: totalData },
       })
       .mockResolvedValueOnce({
-        data: {
-          results: [
-            { name: "41" },
-            { name: "42" },
-            { name: "43" },
-            { name: "44" },
-            { name: "45" },
-            { name: "46" },
-            { name: "47" },
-            { name: "48" },
-            { name: "49" },
-            { name: "50" },
-          ],
-          total: 50,
-        },
+        data: { results: resultPage5, total: totalData },
       });
 
     function App() {
@@ -680,8 +452,8 @@ describe("Intersection Observer", () => {
               rootElement={rootRef}
               loading={false}
             >
-              {pokemons.map((pokemon) => (
-                <div key={pokemon.name}>{pokemon.name}</div>
+              {pokemons.map((pokemon, i) => (
+                <div key={pokemon.name}>{`${i + 1} ${pokemon.name}`}</div>
               ))}
             </InfiniteScroll>
           </div>
@@ -693,23 +465,23 @@ describe("Intersection Observer", () => {
       render(<App />);
     });
     await waitFor(async () => {
-      expect(await screen.findByText("10")).toBeInTheDocument();
+      expect(await screen.findByText("10 caterpie")).toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.getByText("20")).toBeInTheDocument();
+      expect(screen.getByText("20 raticate")).toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.getByText("30")).toBeInTheDocument();
+      expect(screen.getByText("30 nidorina")).toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.queryByText("40")).not.toBeInTheDocument();
+      expect(screen.queryByText("40 wigglytuff")).not.toBeInTheDocument();
     });
     intersectionObserverMock.simulate({ intersectionRatio: 1 });
     await waitFor(() => {
-      expect(screen.queryByText("50")).not.toBeInTheDocument();
+      expect(screen.queryByText("50 diglett")).not.toBeInTheDocument();
     });
 
     expect(spyAxios).toHaveBeenCalledTimes(3);
