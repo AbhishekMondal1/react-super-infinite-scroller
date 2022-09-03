@@ -281,7 +281,6 @@ describe("<Infinite Scroll/> render", () => {
     await waitFor(() => {
       expect(screen.getByText("50 diglett")).toBeInTheDocument();
     });
-    screen.debug();
     expect(spyAxios).toHaveBeenCalledTimes(5);
     expect(spyAxios).toHaveBeenNthCalledWith(
       1,
