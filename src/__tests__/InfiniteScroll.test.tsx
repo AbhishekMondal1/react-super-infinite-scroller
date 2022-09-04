@@ -27,7 +27,7 @@ describe("<Infinite Scroll/> render", () => {
           <InfiniteScroll
             hasMorePages={false}
             setPage={() => {}}
-            loading={false}
+            showLoader={false}
             rootElement={rootRef}
           >
             <div />
@@ -48,7 +48,7 @@ describe("<Infinite Scroll/> render", () => {
           <InfiniteScroll
             hasMorePages={false}
             setPage={() => {}}
-            loading={false}
+            showLoader={false}
           >
             <div />
           </InfiniteScroll>
@@ -69,7 +69,7 @@ describe("<Infinite Scroll/> render", () => {
           <InfiniteScroll
             hasMorePages={false}
             setPage={() => {}}
-            loading={false}
+            showLoader={false}
             rootElement={rootRef}
             rootMarginValue={100}
           >
@@ -93,7 +93,7 @@ describe("<Infinite Scroll/> render", () => {
           <InfiniteScroll
             hasMorePages={false}
             setPage={() => {}}
-            loading={false}
+            showLoader={false}
             rootElement={rootRef}
           >
             {names.map((name) => (
@@ -164,7 +164,7 @@ describe("<Infinite Scroll/> render", () => {
               setPage={setPage}
               hasMorePages={hasMorePages}
               rootElement={rootRef}
-              loading={loading}
+              showLoader={loading}
             >
               {pokemons.map((pokemon) => (
                 <div key={pokemon.name}>{pokemon.name}</div>
@@ -179,7 +179,7 @@ describe("<Infinite Scroll/> render", () => {
       render(<App />);
     });
     await waitFor(() => {
-      expect(screen.getByText("Loading...")).toBeInTheDocument();
+      expect(screen.getByText("Loading more ...")).toBeInTheDocument();
     });
 
     expect(spyAxios).toHaveBeenCalledTimes(1);
@@ -248,7 +248,7 @@ describe("<Infinite Scroll/> render", () => {
               setPage={setPage}
               hasMorePages={hasMorePages}
               rootElement={rootRef}
-              loading={false}
+              showLoader={false}
             >
               {pokemons.map((pokemon, i) => (
                 <div key={pokemon.name}>{`${i + 1} ${pokemon.name}`}</div>
@@ -347,7 +347,7 @@ describe("<Infinite Scroll/> render", () => {
               setPage={setPage}
               hasMorePages={hasMorePages}
               rootElement={rootRef}
-              loading={false}
+              showLoader={false}
               reverse
             >
               {pokemons
@@ -450,7 +450,7 @@ describe("<Infinite Scroll/> render", () => {
               setPage={setPage}
               hasMorePages={hasMorePages}
               rootElement={rootRef}
-              loading={false}
+              showLoader={false}
             >
               {pokemons.map((pokemon, i) => (
                 <div key={pokemon.name}>{`${i + 1} ${pokemon.name}`}</div>
