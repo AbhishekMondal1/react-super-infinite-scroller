@@ -347,7 +347,7 @@ describe("<Infinite Scroll/> render", () => {
               setPage={setPage}
               hasMorePages={hasMorePages}
               rootElement={rootRef}
-              showLoader={false}
+              showLoader
               reverse
             >
               {pokemons
