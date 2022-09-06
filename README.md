@@ -4,11 +4,15 @@ An Infinite Scroll component for React using Intersection Observer API.
 
 [![npm version](https://img.shields.io/npm/v/react-super-infinite-scroller.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/react-super-infinite-scroller)
 [![coverage](https://img.shields.io/codecov/c/github/AbhishekMondal1/react-super-infinite-scroller?style=flat-square&logo=codecov&token=XPQH5LI3U2)](https://codecov.io/gh/AbhishekMondal1/react-super-infinite-scroller)
-![](https://img.shields.io/bundlephobia/min/react-super-infinite-scroller?style=flat-square)
-[![snyk](https://img.shields.io/snyk/vulnerabilities/npm/react-super-infinite-scroller?logo=snyk)](https://snyk.io/test/github/AbhishekMondal1/react-super-infinite-scroller)
+![minified dize](https://img.shields.io/bundlephobia/min/react-super-infinite-scroller?style=flat-square&logo=javascript)
+[![snyk](https://img.shields.io/snyk/vulnerabilities/npm/react-super-infinite-scroller?style=flat-square&logo=snyk)](https://snyk.io/test/github/AbhishekMondal1/react-super-infinite-scroller)
 [![MIT License](https://img.shields.io/github/license/AbhishekMondal1/react-super-infinite-scroller?style=flat-square&)](https://github.com/AbhishekMondal1/react-super-infinite-scroller/blob/master/LICENSE)
 
-## Installation 📦
+<p align="center">
+<img src="https://user-images.githubusercontent.com/71382408/188681956-dc0586b9-40c7-4fc8-bc3f-4470daa84e93.gif" width="600">
+</p>
+
+## ⚙️ Installation
 
 npm
 
@@ -22,18 +26,29 @@ yarn
   yarn add react-super-infinite-scroller
 ```
 
-## Usage
+## 🎉 Features
+
+- 🖱️ **Infinite Scrolling** - Uses Intersection Observer API (no need to use scroll event listener)
+- 🔝 **Reverse Scroll** - Chat history like scrolling (scroll to top to load more, i.e., reverse scrolling)
+- 🎨 **Customizable Loading Component** - You can use your own loader component
+- 📜 **TypeScript Support** - Written in TypeScript
+- 📦 **Tiny Bundle** - 1.2 kB (minified) size
+
+## 📖 Usage
 
 Basic example
 
 ```jsx
 import InfiniteScroll from "react-super-infinite-scroller";
 
-<InfiniteScroll setPage={setPage} hasMorePages={hasMorePages} loading={loading}>
+<InfiniteScroll
+  setPage={setPage}
+  hasMorePages={hasMorePages}
+  showLoader={loading}
+>
   {items.map((item, index) => (
     <div key={index}>
-      <h1>{item.title}</h1>
-      <p>{item.body}</p>
+      <h1>{item}</h1>
     </div>
   ))}
 </InfiniteScroll>;
@@ -69,7 +84,7 @@ function App() {
     <div className="App">
       <InfiniteScroll
         setPage={setPage}
-        loading={loading}
+        showLoader={loading}
         hasMorePages={hasMorePages}
       >
         {items.map((p) => (
@@ -89,7 +104,7 @@ function App() {
 export default App;
 ```
 
-# Demo
+## 🚀 Demo
 
 ### Live Example 🧑‍💻
 
@@ -99,19 +114,20 @@ Infinite scroll with 100 elements <br>
 Reverse scroll <br>
 [![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/s/t7g5oc)
 
-## props
+## 🎛️ Props
 
 | name              | type        | required | description                                                                                                                                              |
 | ----------------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `setPage`         | function    | ✅ yes   | useState function to set the page number.                                                                                                                |
 | `hasMorePages`    | boolean     | ✅ yes   | If there are more items to load.                                                                                                                         |
-| `loading`         | boolean     | ✅ yes   | It tells if data is fetching. When new items are fetching loading state is set to true                                                                   |
+| `showLoader`      | boolean     | ✅ yes   | It tells if data is fetching. When new items are fetching loading state is set to true                                                                   |
 | `children`        | Node        | ✅ yes   | Items you need to scroll.                                                                                                                                |
+| `loader`          | Node        | ❌ no    | Custom loader component.                                                                                                                                 |
 | `reverse`         | boolean     | ❌ no    | Scroll and load items in reverse from top.                                                                                                               |
 | `thresholdValue`  | number      | ❌ no    | Value (between 0.0 and 1.0), representing the percentage target element is visible to trigger the callback.                                              |
 | `rootElement`     | HTMLElement | ❌ no    | Root element of the observer. The element that is used as the viewport for checking visibility of the target. Default is document viewport.              |
 | `rootMarginValue` | string      | ❌ no    | Margin around the target element. `rootMarginValue` represents the margin around the target element that must be in view in order to trigger a callback. |
 
-## License
+## License 📜
 
 [MIT](https://github.com/AbhishekMondal1/react-super-infinite-scroller/blob/master/LICENSE)
