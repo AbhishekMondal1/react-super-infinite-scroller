@@ -6,7 +6,19 @@ function InfiniteScroll(props: InfiniteScrollProps): React.ReactElement {
     children,
     setPage,
     hasMorePages,
-    loading,
+    showLoader,
+    loader = (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "relative",
+        }}
+      >
+        Loading more ...
+      </div>
+    ),
     reverse,
     thresholdValue,
     rootMarginValue,
@@ -21,7 +33,6 @@ function InfiniteScroll(props: InfiniteScrollProps): React.ReactElement {
     observer.current = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          if (observer.current) observer.current.unobserve(entries[0].target);
           setPage((page) => page + 1);
         }
       },
@@ -58,7 +69,7 @@ function InfiniteScroll(props: InfiniteScrollProps): React.ReactElement {
 
   return (
     <div>
-      {loading ? <div>Loading...</div> : null}
+      {reverse && showLoader && loader}
       {React.Children.map(children, (child, index) => {
         if (
           React.isValidElement(child) &&
@@ -80,6 +91,7 @@ function InfiniteScroll(props: InfiniteScrollProps): React.ReactElement {
         }
         return React.isValidElement(child) && React.cloneElement(child);
       })}
+      {!reverse && showLoader && loader}
     </div>
   );
 }
